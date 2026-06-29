@@ -1,0 +1,105 @@
+<style>
+  .msg-error { color: #c0392b; font-size: 11px; display: block; margin-top: 3px; }
+  .campo-error input { border: 1px solid #c0392b; outline: none; }
+</style>
+<div style="max-width:950px; margin:30px auto; font-family:Arial">
+  <h2 style="text-align:center">Mantenimiento de Cliente</h2>
+
+  <div *ngIf="mensaje" style="background:#d4edda; padding:10px; margin-bottom:10px; border:1px solid #c3e6cb; border-radius:4px">
+    ✔ {{ mensaje }}
+  </div>
+
+  <form [formGroup]="form">
+    <table cellpadding="6">
+      <tr>
+        <td>Nombres:</td>
+        <td>
+          <div [class.campo-error]="err('nombres')">
+            <input formControlName="nombres">
+            <span class="msg-error" *ngIf="err('nombres')">⚠ Solo letras, obligatorio</span>
+          </div>
+        </td>
+        <td>Fecha Nacimiento:</td>
+        <td>
+          <div [class.campo-error]="err('fechaNacimiento')">
+          <input type="date" (change)="onFecha($event)">
+          <span class="msg-error" *ngIf="err('fechaNacimiento')">⚠ Formato DD/MM/YYYY</span>
+        </div>
+        </td>
+        <td rowspan="3" style="vertical-align:top; padding-left:20px">
+          <button type="button" (click)="registrar()">Registrar</button><br><br>
+          <button type="button" (click)="actualizar()">Actualizar</button><br><br>
+          <button type="button" (click)="eliminar()">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Apellido Paterno:</td>
+        <td>
+          <div [class.campo-error]="err('apellidoPaterno')">
+            <input formControlName="apellidoPaterno">
+            <span class="msg-error" *ngIf="err('apellidoPaterno')">⚠ Solo letras, obligatorio</span>
+          </div>
+        </td>
+        <td>Dirección:</td>
+        <td>
+          <div [class.campo-error]="err('direccion')">
+            <input formControlName="direccion">
+            <span class="msg-error" *ngIf="err('direccion')">⚠ Obligatorio</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Apellido Materno:</td>
+        <td>
+          <div [class.campo-error]="err('apellidoMaterno')">
+            <input formControlName="apellidoMaterno">
+            <span class="msg-error" *ngIf="err('apellidoMaterno')">⚠ Solo letras, obligatorio</span>
+          </div>
+        </td>
+        <td>Correo electrónico:</td>
+        <td>
+          <div [class.campo-error]="err('correoElectronico')">
+            <input formControlName="correoElectronico">
+            <span class="msg-error" *ngIf="err('correoElectronico')">⚠ Correo inválido</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Sexo:</td>
+        <td colspan="3">
+          <label><input type="radio" formControlName="sexo" value="M"> Masculino</label>
+          <label style="margin-left:15px"><input type="radio" formControlName="sexo" value="F"> Femenino</label>
+          <span class="msg-error" *ngIf="err('sexo')">⚠ Seleccione una opción</span>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <table border="1" cellpadding="6" style="width:100%; margin-top:20px; border-collapse:collapse">
+    <thead style="background:#eee">
+      <tr>
+        <th>Nombres</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Fecha Nacimiento</th>
+        <th>Sexo</th>
+        <th>Dirección</th>
+        <th>Correo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of clientes"
+          (click)="seleccionar(c)"
+          [style.background]="c.idCliente === selectedId ? '#cce5ff' : ''"
+          style="cursor:pointer">
+        <td>{{ c.nombres }}</td>
+        <td>{{ c.apellidoPaterno }}</td>
+        <td>{{ c.apellidoMaterno }}</td>
+        <td>{{ c.fechaNacimiento }}</td>
+        <td>{{ c.sexo === 'M' ? 'Masculino' : 'Femenino' }}</td>
+        <td>{{ c.direccion }}</td>
+        <td>{{ c.correoElectronico }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
